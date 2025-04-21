@@ -52,19 +52,39 @@ void helper(string word, string floatingWord, const set<std::string>& dict, std:
     helper(word, floatingWord, dict, output, next + 1);
   }
   else  {
-    for (char start = 'a'; start <= 'z'; start++) {
-      string word2 = word;
-      word2[next] = start;
+    size_t todo = 0;
 
-      string floatingWord2 = floatingWord;
-      size_t letter = floatingWord.find(start);
-
-      if (letter != string::npos) {
-        floatingWord2.erase(letter, 1);
+    for (size_t i = next; i < word.size(); i++) {
+      if (word[i] == '-') {
+        todo++;
       }
+    }
 
-      helper(word2, floatingWord2, dict, output, next + 1);
+    if (todo == floatingWord.size())  {
+      for (size_t i = 0; i < floatingWord.size(); i++)  {
+        char start = floatingWord[i];
+        string add = word;
+        add[next] = start;
+
+        string addFloat = floatingWord;
+        addFloat.erase(i, 1);
+        helper(add, addFloat, dict, output, next + 1);
+      }
+    }
+    else  {
+      for (char start = 'a'; start <= 'z'; start++) {
+        string word2 = word;
+        word2[next] = start;
+
+        string floatingWord2 = floatingWord;
+        size_t letter = floatingWord.find(start);
+
+        if (letter != string::npos) {
+          floatingWord2.erase(letter, 1);
+        }
+
+        helper(word2, floatingWord2, dict, output, next + 1);
+      }
     }
   }
-
 }
